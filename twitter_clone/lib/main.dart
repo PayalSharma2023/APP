@@ -37,6 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final GlobalKey<FormState> _signInKey = GlobalKey();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final RegExp emailValid = RegExp(r"^[a-zA-Z0-9.!#$%&*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]");
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,8 +58,8 @@ class _MyHomePageState extends State<MyHomePage> {
               validator: (value){
                 if(value == null || value.isEmpty) {
                   return "Please enter a email";
-                } else if (value.length < 6) {
-                  return "Password must be at least 6 characters";
+                } else if (!emailValid.hasMatch(value)) {
+                  return "Please enter a vaild email";
                 }
                 return null;
               },
