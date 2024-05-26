@@ -34,6 +34,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final GlobalKey<FormState> _signInKey = GlobalKey();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   @override
@@ -44,26 +45,47 @@ class _MyHomePageState extends State<MyHomePage> {
           title: const Text("Twitter Clone"),
         ),
         body: Form(
+          key: _signInKey,
             child: Column(
-          children: [
+          children: <Widget>[
             TextFormField(
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
                 hintText: "Enter an email",
               ),
+              validator: (value){
+                if(value == null || value.isEmpty) {
+                  return "Please enter a email";
+                } else if (value.length < 6) {
+                  return "Password must be at least 6 characters";
+                }
+                return null;
+              },
             ), //email
             TextFormField(
               controller: _passwordController,
               obscureText: true,
               decoration: InputDecoration(
-                hintText: "Enter a pasword",
+                hintText: "Pasword",
               ),
+              validator: (value){
+                if(value == null || value.isEmpty) {
+                  return "Please enter a password";
+                } else if (value.length < 6) {
+                  return "Password must be at least 6 characters";
+                }
+                return null;
+              },
             ), //password
             ElevatedButton(
                 onPressed: () {
-                  debugPrint("Email: ${_emailController.text}");
-                  debugPrint("Password: ${_passwordController.text}");
+                  if (_signInKey.currentState!.validate()) {
+                     debugPrint("Email: ${_emailController.text}");
+                     debugPrint("Password: ${_passwordController.text}");
+
+                  }
+                 
                 },
                 child: const Text("Submit")),
           ],
