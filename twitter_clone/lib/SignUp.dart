@@ -1,40 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:twitter_clone/SignUp.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        appBarTheme: AppBarTheme(
-          centerTitle: true,
-        ),
-       // colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: MyHomePage(),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({
+class SignUp extends StatefulWidget {
+  const SignUp({
     super.key,
   });
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<SignUp> createState() => _SignUpState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _SignUpState extends State<SignUp> {
   final GlobalKey<FormState> _signInKey = GlobalKey();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -43,15 +18,13 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
         body: Form(
             key: _signInKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Image.asset("assets/logo.png", height: 140, width: 200),
                 const Text(
-                  "Log In to twitter",
+                  "Sign Up to twitter",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
@@ -131,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           debugPrint("Password: ${_passwordController.text}");
                         }
                       },
-                      child: const Text("Log In",
+                      child: const Text("SignUp",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 18
@@ -141,9 +114,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
                 TextButton(
                   onPressed: (){
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=> const SignUp()));
+                    Navigator.of(context).pop();
                   },
-                  child: const Text("Don't have an account yet? Sign Up here"))
+                  child: const Text("Already have an account ? Log In"))
               ],
             )));
   }
