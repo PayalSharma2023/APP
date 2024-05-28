@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({
@@ -10,6 +13,8 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final GlobalKey<FormState> _signInKey = GlobalKey();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -29,7 +34,7 @@ class _SignUpState extends State<SignUp> {
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
                   ),
-                  ),
+                ),
 
                 Container(
                   margin: EdgeInsets.fromLTRB(15, 30, 15, 0),
@@ -37,19 +42,17 @@ class _SignUpState extends State<SignUp> {
                   decoration: BoxDecoration(
                     color: Color.fromARGB(255, 240, 240, 240),
                     borderRadius: BorderRadius.circular(30),
-
                   ),
                   child: TextFormField(
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
                     decoration: const InputDecoration(
-                      hintText: "Enter an email",
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(
-                        vertical: 15,
-                        horizontal: 20,
-                      )
-                    ),
+                        hintText: "Enter an email",
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(
+                          vertical: 15,
+                          horizontal: 20,
+                        )),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "Please enter a email";
@@ -60,7 +63,6 @@ class _SignUpState extends State<SignUp> {
                     },
                   ),
                 ), //email
-                
 
                 Container(
                   margin: EdgeInsets.all(15),
@@ -73,13 +75,12 @@ class _SignUpState extends State<SignUp> {
                     controller: _passwordController,
                     obscureText: true,
                     decoration: InputDecoration(
-                      hintText: "Pasword",
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(
-                        vertical: 15,
-                        horizontal: 20,
-                      )
-                    ),
+                        hintText: "Pasword",
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(
+                          vertical: 15,
+                          horizontal: 20,
+                        )),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "Please enter a password";
@@ -98,25 +99,38 @@ class _SignUpState extends State<SignUp> {
                     borderRadius: BorderRadius.circular(30),
                   ),
                   child: TextButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (_signInKey.currentState!.validate()) {
-                          debugPrint("Email: ${_emailController.text}");
-                          debugPrint("Password: ${_passwordController.text}");
+                          try {
+                            await _auth.createUserWithEmailAndPassword(
+                              email: _emailController.text,
+                              password: _passwordController.text,
+                            );
+                            _firestore.collection("users").add({
+                              'email' : _emailController.text
+                            });
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(e.toString())),
+                            );
+                          }
+                          ;
                         }
                       },
-                      child: const Text("SignUp",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18
-                      ),)),
+                      child: const Text(
+                        "SignUp",
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      )),
                 ),
-                SizedBox(height: 10,),
+                SizedBox(
+                  height: 10,
+                ),
 
                 TextButton(
-                  onPressed: (){
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text("Already have an account ? Log In"))
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text("Already have an account ? Log In"))
               ],
             )));
   }
