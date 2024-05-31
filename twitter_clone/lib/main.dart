@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:twitter_clone/pages/home.dart';
 import 'package:twitter_clone/pages/signin.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -26,7 +28,16 @@ class MyApp extends StatelessWidget {
        // colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const Signin(),
+      home: StreamBuilder<User? >(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if(snapshot.hasData){
+            return const Home();
+          }
+          return const Signin();
+        }
+      ),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

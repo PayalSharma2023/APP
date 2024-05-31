@@ -36,10 +36,10 @@ class _SigninState extends State<Signin> {
                   ),
 
                 Container(
-                  margin: EdgeInsets.fromLTRB(15, 30, 15, 0),
-                  padding: EdgeInsets.symmetric(vertical: 10),
+                  margin: const EdgeInsets.fromLTRB(15, 30, 15, 0),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
                   decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 240, 240, 240),
+                    color: const Color.fromARGB(255, 240, 240, 240),
                     borderRadius: BorderRadius.circular(30),
 
                   ),
@@ -67,8 +67,8 @@ class _SigninState extends State<Signin> {
                 
 
                 Container(
-                  margin: EdgeInsets.all(15),
-                  padding: EdgeInsets.symmetric(vertical: 10),
+                  margin: const EdgeInsets.all(15),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),
                     color: const Color.fromARGB(255, 240, 240, 240),
@@ -76,7 +76,7 @@ class _SigninState extends State<Signin> {
                   child: TextFormField(
                     controller: _passwordController,
                     obscureText: true,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: "Pasword",
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.symmetric(
@@ -96,7 +96,7 @@ class _SigninState extends State<Signin> {
                 ), //password
                 Container(
                   width: 250,
-                  padding: EdgeInsets.symmetric(vertical: 10),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
                   decoration: BoxDecoration(
                     color: Colors.blue,
                     borderRadius: BorderRadius.circular(30),
@@ -114,7 +114,7 @@ class _SigninState extends State<Signin> {
                         fontSize: 18
                       ),)),
                 ),
-                SizedBox(height: 10,),
+                const SizedBox(height: 10,),
 
                 TextButton(
                   onPressed: (){

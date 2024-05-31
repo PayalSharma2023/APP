@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:twitter_clone/models/users.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({
@@ -106,9 +107,9 @@ class _SignUpState extends State<SignUp> {
                               email: _emailController.text,
                               password: _passwordController.text,
                             );
-                            _firestore.collection("users").add({
-                              'email' : _emailController.text
-                            });
+                            _firestore.collection("users")
+                            .add(FirebaseUser(email: _emailController.text).toMap());
+                            Navigator.pop(context);
                           } catch (e) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text(e.toString())),
