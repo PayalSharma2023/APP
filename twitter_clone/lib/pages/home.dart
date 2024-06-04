@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:twitter_clone/pages/settings.dart';
 import 'package:twitter_clone/providers/user_provider.dart';
 
 class Home extends ConsumerWidget {
@@ -11,7 +12,7 @@ class Home extends ConsumerWidget {
     LocalUser currentUser = ref.watch(userProvider);
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Home"),
+        title: const Text("Home",style: TextStyle(color: Colors.white,),),
         leading: Builder(
           builder: (context) {
             return GestureDetector(
@@ -29,17 +30,7 @@ class Home extends ConsumerWidget {
         ),
 
         backgroundColor: Colors.blue,
-        actions: [
-          TextButton(
-              onPressed: () {
-                FirebaseAuth.instance.signOut();
-                ref.read(userProvider.notifier).logout();
-              },
-              child: const Text(
-                "Sign Out",
-                style: TextStyle(color: Colors.white),
-              ))
-        ],
+        
       ),
       body: Column(
         children: [
@@ -54,9 +45,17 @@ class Home extends ConsumerWidget {
           style: const TextStyle(fontWeight: FontWeight.bold, 
           fontSize: 18),
           ),),
+
           ListTile(title: const Text("Settings"),
           onTap: (){
+            Navigator.pop(context);
             Navigator.of(context).push(MaterialPageRoute(builder: (context)=> Settings()));
+          },),
+
+          ListTile(title: const Text("Sign Out"),
+          onTap: (){
+            FirebaseAuth.instance.signOut();
+                ref.read(userProvider.notifier).logout();
           },)
         ],)),
     );
