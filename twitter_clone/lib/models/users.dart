@@ -3,28 +3,38 @@ import 'dart:convert';
 
 class FirebaseUser {
   final String email;
+  final String name;
+  final String ProfilePic;
 
   const FirebaseUser({
     required this.email,
+    required this.name,
+    required this.ProfilePic,
   });
 
   FirebaseUser copyWith({
     String? email,
   }) {
     return FirebaseUser(
-      email: email ?? this.email,
+      email: email ?? this.email, 
+      name: name ?? this.name, 
+      ProfilePic: ProfilePic ?? this.ProfilePic,
     );
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'email': email,
+      'name': name,
+      'ProfilePic': ProfilePic,
     };
   }
 
   factory FirebaseUser.fromMap(Map<String, dynamic> map) {
     return FirebaseUser(
-      email: map['email'] as String,
+      email: map['email'] ?? '', 
+      name: map['name']?? '', 
+      ProfilePic: map['ProfilePic'] ?? '',
     );
   }
 

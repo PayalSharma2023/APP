@@ -1,17 +1,22 @@
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:twitter_clone/pages/SignUp.dart';
+import 'package:twitter_clone/providers/user_provider.dart';
 
-class Signin extends StatefulWidget {
+class Signin extends ConsumerStatefulWidget {
   const Signin({
     super.key,
   });
 
   @override
-  State<Signin> createState() => _SigninState();
+  ConsumerState<Signin> createState() => _SigninState();
 }
 
-class _SigninState extends State<Signin> {
+class _SigninState extends ConsumerState<Signin> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   final GlobalKey<FormState> _signInKey = GlobalKey();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -94,6 +99,9 @@ class _SigninState extends State<Signin> {
                     },
                   ),
                 ), //password
+                const SizedBox(
+                  height: 20,
+                ),
                 Container(
                   width: 250,
                   padding: const EdgeInsets.symmetric(vertical: 10),
@@ -102,10 +110,21 @@ class _SigninState extends State<Signin> {
                     borderRadius: BorderRadius.circular(30),
                   ),
                   child: TextButton(
-                      onPressed: () {
+                      onPressed: () async{
                         if (_signInKey.currentState!.validate()) {
-                          debugPrint("Email: ${_emailController.text}");
-                          debugPrint("Password: ${_passwordController.text}");
+                         try{
+                          await _auth.signInWithEmailAndPassword(
+                            email: _emailController.text, 
+                            password: _passwordController.text);
+
+                            ref
+                            .read(userProvider.notifier)
+                            .login(_emailController.text);
+
+                         } catch(e) {
+                          ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(content: Text(e.toString())));
+                         }
                         }
                       },
                       child: const Text("Log In",
