@@ -1,6 +1,10 @@
-import 'package:twitter_clone/models/users.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'package:twitter_clone/models/users.dart';
 
 final userProvider = StateNotifierProvider<UserNotifier, LocalUser>((ref) {
   return UserNotifier();
@@ -33,6 +37,7 @@ class UserNotifier extends StateNotifier<LocalUser> {
         );
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseStorage _storage = FirebaseStorage.instance;
   
    Future<void> login(String email)async {
     QuerySnapshot response = await _firestore
@@ -54,7 +59,9 @@ class UserNotifier extends StateNotifier<LocalUser> {
 
   Future<void> signUp(String email)async {
     DocumentReference response = await _firestore.collection("users").add(
-      FirebaseUser(email: email, name: "No name", ProfilePic: "http://www.gravatar.com/avatar/?d=mp").toMap());
+      FirebaseUser(email: email, 
+      name: "No name", 
+      ProfilePic: "http://www.gravatar.com/avatar/?d=mp").toMap());
 
     DocumentSnapshot snapshot = await response.get();
       state = LocalUser(id: response.id, user: FirebaseUser.fromMap(snapshot.data() as Map<String, dynamic>));
@@ -67,10 +74,22 @@ class UserNotifier extends StateNotifier<LocalUser> {
     state = state.copyWith(user: state.user.copyWith(name: name));
   }
 
+  Future<void> updateImage(File picture) async{
+
+
+    await _firestore.collection("users").
+    doc(state.id)
+    .update({
+      "ProfilePic" : ""
+    });
+    state = state.copyWith(user: state.user.copyWith(ProfilePic:"" ));
+  }
+
   void logout(){
     state =  const LocalUser(
         id: "error", 
-        user: FirebaseUser(email: "error",  name: "error", ProfilePic:  "error")
+        user: FirebaseUser(email: "error",  
+        name: "error", ProfilePic:  "error")
         );
   }
 }

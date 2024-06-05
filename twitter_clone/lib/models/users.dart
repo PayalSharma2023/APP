@@ -13,7 +13,7 @@ class FirebaseUser {
   });
 
   FirebaseUser copyWith({
-    String? email,
+    String? email, String? name, String? ProfilePic,
   }) {
     return FirebaseUser(
       email: email ?? this.email, 

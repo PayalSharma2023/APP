@@ -85,4 +85,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'twitter-clone-babd7.appspot.com',
     measurementId: 'G-VV27EQDB8T',
   );
+
 }
