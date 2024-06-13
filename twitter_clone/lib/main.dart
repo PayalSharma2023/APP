@@ -40,6 +40,18 @@ class MyApp extends ConsumerWidget {
           return const Signin();
         }
       ),
+      theme: ThemeData(
+        appBarTheme: const AppBarTheme(
+          centerTitle: true,
+          backgroundColor: Colors.transparent,
+          shadowColor: Colors.transparent,
+          titleTextStyle: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+          )
+        )
+      ),
       debugShowCheckedModeBanner: false,
     );
   }

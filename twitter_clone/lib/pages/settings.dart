@@ -37,7 +37,8 @@ class _SettingsState extends ConsumerState<Settings> {
                   requestFullMetadata: false);
 
                 if (pickedImage!= null){
-                  ref.read(userProvider.notifier).updateImage(File(pickedImage.path));
+                  ref.read(userProvider.notifier)
+                  .updateImage(File(pickedImage.path));
                 }
 
               },
